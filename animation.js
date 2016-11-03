@@ -5,7 +5,7 @@
 *direction：运动的方向，取值：'v','h'（默认）
 *velocity：运动速度
 */
-function uniformMove(ele,target,direction,velocity){
+function uniformMove(ele,target,direction,velocity,func){
 	direction = direction || 'h';
 	clearInterval(ele.timeId);
 	ele.timeId = setInterval(function(){
@@ -15,6 +15,9 @@ function uniformMove(ele,target,direction,velocity){
 		if(offset === target) {
 				clearInterval(ele.timeId);
 				ele.style[dir] = target + "px";
+				if(func){
+					func();
+				}
 			}else {
 				ele.style[dir] = offset + speed + "px";
 			}
@@ -29,7 +32,7 @@ function uniformMove(ele,target,direction,velocity){
 *direction：运动的方向，取值：'v','h'（默认）
 *velocity：运动速度，值越小速度越快，值越大速度越慢
 */
-function bufferMove(ele,target,direction,velocity){
+function bufferMove(ele,target,direction,velocity,func){
 	direction = direction || 'h';
 	clearInterval(ele.timeId);
 	var speed;
@@ -40,6 +43,9 @@ function bufferMove(ele,target,direction,velocity){
 		speed = speed > 0?Math.ceil(speed):Math.floor(speed);
 		if(offset === target) {
 			clearInterval(ele.timeId);
+			if(func){
+				func();
+			}
 		}else {
 			ele.style[dir] = offset + speed + "px";
 		}	
@@ -55,16 +61,24 @@ function bufferMove(ele,target,direction,velocity){
 *target：属性的目标值
 *att：要改变的属性名
 */
-function attributeAnim(obj,att,target) {
+function attributeAnim(obj,json,func) {
 	clearInterval(obj.timeId);
 	obj.timeId = setInterval(function(){
-		var start = (att === 'opacity')?parseInt(parseFloat(getStyle(obj,att))*100):parseInt(getStyle(obj,att));
-		var speed = (target - start)/7
-		speed = speed > 0?Math.ceil(speed):Math.floor(speed);
-		if(start === target) {
-			clearInterval(obj.timeId);
-		} else {
+		var isStop = true;
+		for(var att in json){
+			var start = (att === 'opacity')?parseInt(parseFloat(getStyle(obj,att))*100):parseInt(getStyle(obj,att));
+			var speed = (json[att] - start)/7
+			speed = speed > 0?Math.ceil(speed):Math.floor(speed);
+			if(start != json[att]) {
+				isStop = false;
+			} 
 			obj.style[att]  = (att === 'opacity')?(start + speed)/100:(start + speed) + "px";
+		}	
+		if(isStop){
+			clearInterval(obj.timeId);
+			if(func){
+				func();
+			}
 		}
 	},30);
 }
