@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>test</title>
+	<style>
+		.box{
+			position: relative;
+			width:200px;
+			height:200px;
+			font-size: 20px;
+			color:#fff;
+			text-align: center;
+			line-height: 200px;
+			border: 1px solid #F0C72B;
+			border-radius: 10px;
+			background: #43370C;
+		}
+		.wrap{
+			position: relative;
+			width: 400px;
+			height:400px;
+			border:5px solid #000;
+		}
+		.wrap>div{
+			position: absolute;
+			width:40px;
+			height:40px;
+			font-size: 15px;
+			text-align: center;
+			line-height: 40px;
+			color:#fff;
+			background: #43370C;
+
+		}
+	</style>
+</head>
+<body>
+	<div class="box" id="div1">1.匀速运动</div><hr>
+	<div class="box" id="div2">2.匀加速运动</div><hr>
+	<div class="box" id="div3">3.匀减速运动</div><hr>
+	<div class="box" id="div4">4.缓冲运动</div><hr>
+	<div class="box" id="div5">5.属性变化过程的动画</div><hr>
+	<div class="box" id="div6">6.弹性运动</div><hr>
+	<div class="wrap">
+		7.碰撞运动
+		<div id="div7">click</div>
+	</div><hr>
+	<div class="wrap">
+		8.碰撞及重力运动
+		<div id="div8">click</div>
+	</div>
+
+
+
+
+
+	<script src="animation.js"></script>
+
+	<script>
+		var div1 = document.getElementById('div1');
+		var div2 = document.getElementById('div2');
+		var div3 = document.getElementById('div3');
+		var div4 = document.getElementById('div4');
+		var div5 = document.getElementById('div5');
+		var div6 = document.getElementById('div6');
+		var div7 = document.getElementById('div7');
+		var div8 = document.getElementById('div8');
+
+		var wrap = document.getElementsByClassName('wrap');
+
+
+		//1.匀速运动
+		div1.onclick = function() {
+			uniformMove(this,700,'normal',30,'h');
+		};
+		//2.匀加速运动
+		div2.onclick = function() {
+			uniformMove(this,700,'up',30,'h');
+		};
+		//3.匀减速运动
+		div3.onclick = function() {
+			uniformMove(this,700,'down',30,'h');
+		};
+		//4.缓冲运动
+		div4.onclick = function() {
+			bufferMove(this,700,'h',10);
+		};
+		//5.属性变化过程的动画
+		div5.onmouseenter = function() {
+			var attAndVal1 = {width:400,height:400,opacity:30};
+			attributeAnim(this,attAndVal1);
+		};
+		div5.onmouseout = function() {
+			var attAndVal2 = {width:200,height:200,opacity:100};
+			attributeAnim(this,attAndVal2);
+		};
+		//6.弹性运动
+		div6.onmouseenter = function() {
+			flexMove(this,'width',700,10);
+		};
+		div6.onmouseout = function() {
+			flexMove(this,'width',200,30);
+		};
+		//7.碰撞运动
+		div7.onclick = function() {
+			knockMove(this,wrap[0],2,4,false);
+		};
+
+		//8.碰撞及重力运动
+		div8.onclick = function() {
+			knockMove(this,wrap[1],2,4,true);
+		};
+		
+
+	</script>
+</body>
+</html>
