@@ -77,7 +77,7 @@ function bufferMove(obj,target,direction,velocity,func){
 *att：要改变的属性名(string)
 *func:回调函数
 */
-function attributeAnim(obj,json,func) {
+function attributeAnim(obj,json,velocity,func) {
 	clearInterval(obj.timeId);
 	obj.timeId = setInterval(function(){
 		var isStop = true;
@@ -96,7 +96,7 @@ function attributeAnim(obj,json,func) {
 				func();
 			}
 		}
-	},30);
+	},velocity);
 }
 
 /*
@@ -131,10 +131,12 @@ function flexMove(obj,att,target,velocity) {
 */
 function knockMove(obj,parentObj,speedX,speedY,isGravity){
 	clearInterval(obj.timeId);
-	var w =  parentObj.offsetWidth - obj.offsetWidth - parseInt(getStyle(parentObj,'borderWidth'))*2;
-	var h =  parentObj.offsetHeight - obj.offsetHeight - parseInt(getStyle(parentObj,'borderWidth'))*2;
+	var w =  parentObj.clientWidth - obj.offsetWidth;
+	var h =  parentObj.clientHeight - obj.offsetHeight;
+	console.log(obj.style);
 	speedX = speedX || 2;
 	speedY = speedY || 3;
+
 	obj.timeId = setInterval(function(){
 		if(isGravity){
 			speedY += 6;
@@ -155,6 +157,7 @@ function knockMove(obj,parentObj,speedX,speedY,isGravity){
 			speedY *= -1;
 			t = h;
 		}
+		console.log(t,h);
 		if(isGravity){
 			// console.log(obj.offsetLeft,t);
 			if(obj.offsetTop === t){
